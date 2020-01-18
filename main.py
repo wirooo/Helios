@@ -6,5 +6,4 @@ app = Flask(__name__)
 def main():
     return render_template('index.html')
 
-
 app.run()
