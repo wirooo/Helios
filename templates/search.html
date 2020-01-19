@@ -2,34 +2,44 @@
 
 {% block script %}
 <script type="text/javascript">
-    function uploadFile(){
-        alert("yo");
+    function doSearch(){
         var file = document.getElementById("resume-file").files[0];
+        var jobtitle = document.getElementById("jobtitle").value;
         var req = new XMLHttpRequest();
         var formdata = new FormData();
         formdata.append("resume", file);
+        formdata.append("jobtitle", jobtitle);
         req.onreadystatechange = function(){
             if(req.readyState == 4 && req.status==200){
                 alert("back");
             }
         }
-        req.open("POST", '/upload');
-        req.send(formData);
+        req.open("POST", '/search');
+        req.send(formdata);
+    }
+    function updateList(){
+        var input = document.getElementById("resume-file");
+        var output = document.getElementById("resume-file");
+        document.getElementById("resume-label").innerHTML = document.getElementById("resume-file").files[0].name;
     }
 
 </script>
 {% endblock %}
 
 {% block content %}
-<form action="/upload" method="POST" enctype="multipart/form-data">
+<div class="container">
     <div class="form-group">
         <div class="custom-file">
-        <input type="file" class="custom-file-input" name="resume" id="resume-file">
-        <label class="custom-file-label" for="image">Browse</label>
-        <button type="submit" class="btn btn-primary">Upload</button>
+            <input type="file" class="custom-file-input" id="resume-file" onchange="updateList()">
+            <label class="custom-file-label" id="resume-label">Choose File</label>
         </div>
     </div>
-
-</form>
-
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Enter Job Title" aria-label="Recipient's username" aria-describedby="button-addon2" id="jobtitle">
+        <div class="input-group-append">
+            <button onclick="doSearch()" class="btn btn-primary">Search!</button>
+        </div>
+    </div>
+    
+</div>
 {% endblock %}

@@ -1,5 +1,6 @@
-from flask import Flask, request, jsonify, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for
 import resume_scraper
+import WebScraper
 
 app = Flask(__name__)
 
@@ -7,16 +8,15 @@ app = Flask(__name__)
 def main():
     return render_template('index.html')
 
-@app.route('/search', methods=['GET'])
+@app.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'GET':
         return render_template('search.html')
-
-@app.route('/upload', methods=['POST'])
-def upload():
-    if request.method == 'POST':
+    elif request.method == 'POST':
         if request.files:
             resume = request.files["resume"]
+            jobtitle = request.form["jobtitle"]
+            print(jobtitle)
             save_name = "resumes/"+resume.filename
             resume.save(save_name)
             keywords = resume_scraper.match_keywords(save_name)
