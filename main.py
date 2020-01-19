@@ -41,14 +41,15 @@ def findmatches(jobs, keywords):
 
 def runsearches(keywords, jobtitle):
     print("finding jobs for " + jobtitle)
-    # indeedjobs = indeedscrape(jobtitle)
+    indeedjobs = indeedscrape(jobtitle)
     monsterjobs = monsterscrape(jobtitle, "Toronto")
     print("matching jobs")
-    # indeedmatches = findmatches(indeedjobs, keywords)
+    indeedmatches = findmatches(indeedjobs, keywords)
     monstermatches = findmatches(monsterjobs, keywords)
-    # return indeedmatches + monstermatches
     print("finished matching")
-    return monstermatches
+    print(indeedmatches)
+    return indeedmatches + monstermatches
+    # return monstermatches
 
 
 @app.route('/about', methods=['GET'])
