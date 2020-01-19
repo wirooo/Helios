@@ -68,12 +68,26 @@ def monsterscrape(searchterm, city):
         jobdata = {}
         jobresponse = requests.get(job_url, timeout=5)
         jobcontent = BeautifulSoup(jobresponse.content, "lxml")
-        description = jobcontent.find("div", attrs={"id": "JobDescription"}).text
-        jobdata["description"] = description
-        jobdata["url"] = job_url
-        title = jobcontent.find("h1", attrs={"class": "title"}).text.split(" at ")
-        jobdata["title"] = title[0]
-        jobdata["company"] = title[1].rstrip("\n")
-        jobdata["platform"] = "monster"
-        jobs.append(jobdata)
+        description = jobcontent.find("div", attrs={"id": "JobBody"})
+        if description is None:
+            description = jobcontent.find("div", attrs={"id": "JobDescription"})
+        if description is not None:
+            description = description.text
+            jobdata["description"] = description
+            jobdata["url"] = job_url
+            title = jobcontent.find("h1", attrs={"class": "title"}).text
+            jobdata["platform"] = "monster"
+            if " at " in title:
+                title = title.split(" at ")
+                jobdata["title"] = title[0]
+                jobdata["company"] = title[1].rstrip("\n")
+                jobs.append(jobdata)
+            elif " from " in title:
+                title = title.split(" from ")
+                jobdata["title"] = title[0]
+                jobdata["company"] = title[1].rstrip("\n")
+                jobs.append(jobdata)
+            else:
+                jobdata["title"] = title
+                jobs.append(jobdata)
     return jobs

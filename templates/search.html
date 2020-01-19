@@ -2,14 +2,52 @@
 
 {% block script %}
 <script type="text/javascript">
+    function gotoPosting(){
+        alert('a');
+    }
+    function createTable(matches){
+        var prevbdy = document.getElementById("resultstbody");
+        if(prevbdy !== null){
+            prevbdy.parentNode.removeChild(prevbdy);
+        }
+        var tbl = document.getElementById("resultstable");
+        var tbdy = document.createElement("tbody");
+        tbdy.setAttribute("id", "resultstbody");
+        for(var i=1; i<=matches.length; i++){
+            if(typeof matches[i] !== 'undefined'){
+                console.log(matches[i])
+                var newtr = document.createElement('tr');
+                var theader = document.createElement('th');
+                theader.setAttribute("scope", "row");
+                theader.innerHTML = i;
+                newtr.appendChild(theader);
+                var tcell1 = document.createElement('td');
+                tcell1.innerHTML = matches[i]["title"];
+                newtr.appendChild(tcell1);
+                var tcell2 = document.createElement('td');
+                tcell2.innerHTML = matches[i]["company"];
+                newtr.appendChild(tcell2);
+                var applybtn = document.createElement('a');
+                var lasttd = document.createElement('td');
+                applybtn.setAttribute("class", "btn btn-secondary");
+                applybtn.setAttribute("href", matches[i]["url"]);
+                applybtn.setAttribute("target", "_blank")
+                applybtn.innerHTML = "Apply on " + matches[i]["platform"];
+                lasttd.appendChild(applybtn);
+                newtr.appendChild(lasttd);
+                tbdy.appendChild(newtr);
+            }
+        }
+        tbl.appendChild(tbdy);
+    }
     function doSearch(){
         var searchbtn = document.getElementById("searchbtn");
-        searchbtn.disabled=true;
         var resultstable = document.getElementById("resultstable");
         var spinner = document.getElementById("loadingspinner");
-        spinner.style.display="flex";
         var file = document.getElementById("resume-file").files[0];
         var jobtitle = document.getElementById("jobtitle").value;
+        var formdata = new FormData();
+        formdata.append("jobtitle", jobtitle);
         if(document.getElementById("resume-file").value == ""){
             alert("Please Select a Resume to Upload");
             return;
@@ -18,19 +56,22 @@
             alert("Please Enter a Job Title");
             return;
         }
+        searchbtn.disabled=true;
+        spinner.style.display="flex";
         var req = new XMLHttpRequest();
-        var formdata = new FormData();
         formdata.append("resume", file);
-        formdata.append("jobtitle", jobtitle);
+        for (var key of formdata.entries()) {
+			console.log(key[0] + ', ' + key[1])
+		}
         req.onreadystatechange = function(){
             if(req.readyState == 4 && req.status==200){
                 var response = req.responseText;
-                console.log(response);
+                console.log("matches received");
                 var matches = JSON.parse(response);
                 resultstable.style.display = 'table';
                 spinner.style.display = 'none'
                 searchbtn.disabled = false;
-                
+                createTable(matches);
             }
         }
         req.open("POST", '/search');
@@ -66,7 +107,7 @@
     <div class="spinner-border" role="status">
         <span class="sr-only">Loading...</span>
     </div>
-    <p class="justify-content-center">  Searching jobs for you! This may take a moment.</p>
+    <p class="justify-content-center" style="padding-left: 5px;">Searching jobs for you! This may take a moment.</p>
 </div>
 
 <div class="container">
@@ -79,25 +120,8 @@
         <th scope="col">Platform</th>
         </tr>
     </thead>
-    <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-        </tr>
+    <tbody id="resultstbody">
+
     </tbody>
     </table>
 </div>

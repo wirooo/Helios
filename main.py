@@ -19,7 +19,8 @@ def search():
             save_name = "resumes/"+resume.filename
             resume.save(save_name)
             keywords = resume_scraper.match_keywords(save_name)
-            return jsonify(runsearches(keywords, jobtitle))
+            results = runsearches(keywords, jobtitle)
+            return jsonify(results)
 
 def findmatches(jobs, keywords):
     matches=[]
@@ -39,7 +40,7 @@ def findmatches(jobs, keywords):
     return matches
 
 def runsearches(keywords, jobtitle):
-    print("finding jobs")
+    print("finding jobs for " + jobtitle)
     # indeedjobs = indeedscrape(jobtitle)
     monsterjobs = monsterscrape(jobtitle, "Toronto")
     print("matching jobs")
