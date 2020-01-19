@@ -19,7 +19,8 @@ def indeedscrape(searchterm):
         soup = BeautifulSoup(source, 'lxml')
         description = soup.find(id="jobDescriptionText").text
         title = soup.find('h3', attrs={'class': 'icl-u-xs-mb--xs icl-u-xs-mt--none jobsearch-JobInfoHeader-title'}).text
-        answer = [title, description]
+        company = soup.find('div', attrs={'class': 'jobsearch-CompanyInfoWithoutHeaderImage'}).text
+        answer = [title, description, company]
         return answer
         # print(answer)
 
@@ -29,10 +30,12 @@ def indeedscrape(searchterm):
 
     for i in listofjobs(joburl):
         jobdata = {}
-        jobdata['title'] = jobtitleanddescription(i)[0]
-        jobdata['description'] = jobtitleanddescription(i)[1]
+        jobresults = jobtitleanddescription(i)
+        jobdata['title'] = jobresults[0]
+        jobdata['description'] = jobresults[1]
         jobdata['url'] = i
-        jobdata['platform'] = "indeed"
+        jobdata['platform'] = "Indeed"
+        jobdata['company'] = jobresults[2]
         jobs.append(jobdata)
 
     return jobs
@@ -61,7 +64,7 @@ def monsterscrape(searchterm, city):
             jobdata["description"] = description
             jobdata["url"] = job_url
             title = jobcontent.find("h1", attrs={"class": "title"}).text
-            jobdata["platform"] = "monster"
+            jobdata["platform"] = "Monster"
             if " at " in title:
                 title = title.split(" at ")
                 jobdata["title"] = title[0]
