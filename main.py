@@ -1,6 +1,6 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, jsonify
 import resume_scraper
-import WebScraper
+from WebScraper import *
 
 app = Flask(__name__)
 
@@ -16,12 +16,39 @@ def search():
         if request.files:
             resume = request.files["resume"]
             jobtitle = request.form["jobtitle"]
-            print(jobtitle)
             save_name = "resumes/"+resume.filename
             resume.save(save_name)
             keywords = resume_scraper.match_keywords(save_name)
-            print(keywords)
-            return redirect(url_for("search"))
+            return jsonify(runsearches(keywords, jobtitle))
+
+def findmatches(jobs, keywords):
+    matches=[]
+    for job in jobs:
+        suitability = 0
+        for kwd in keywords:
+            if kwd in job["description"]:
+                suitability += 1
+        if(suitability > 0):
+            newmatch = {}
+            for key in job:
+                if key != "description":
+                    newmatch[key] = job[key]
+            newmatch["suitability"] = suitability
+            matches.append(newmatch)
+
+    return matches
+
+def runsearches(keywords, jobtitle):
+    print("finding jobs")
+    # indeedjobs = indeedscrape(jobtitle)
+    monsterjobs = monsterscrape(jobtitle, "Toronto")
+    print("matching jobs")
+    # indeedmatches = findmatches(indeedjobs, keywords)
+    monstermatches = findmatches(monsterjobs, keywords)
+    # return indeedmatches + monstermatches
+    print("finished matching")
+    return monstermatches
+
 
 @app.route('/about', methods=['GET'])
 def about():

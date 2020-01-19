@@ -3,15 +3,34 @@
 {% block script %}
 <script type="text/javascript">
     function doSearch(){
+        var searchbtn = document.getElementById("searchbtn");
+        searchbtn.disabled=true;
+        var resultstable = document.getElementById("resultstable");
+        var spinner = document.getElementById("loadingspinner");
+        spinner.style.display="flex";
         var file = document.getElementById("resume-file").files[0];
         var jobtitle = document.getElementById("jobtitle").value;
+        if(document.getElementById("resume-file").value == ""){
+            alert("Please Select a Resume to Upload");
+            return;
+        }
+        if(jobtitle=""){
+            alert("Please Enter a Job Title");
+            return;
+        }
         var req = new XMLHttpRequest();
         var formdata = new FormData();
         formdata.append("resume", file);
         formdata.append("jobtitle", jobtitle);
         req.onreadystatechange = function(){
             if(req.readyState == 4 && req.status==200){
-                alert("back");
+                var response = req.responseText;
+                console.log(response);
+                var matches = JSON.parse(response);
+                resultstable.style.display = 'table';
+                spinner.style.display = 'none'
+                searchbtn.disabled = false;
+                
             }
         }
         req.open("POST", '/search');
@@ -27,7 +46,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container" style="padding-top: 10px;">
     <div class="form-group">
         <div class="custom-file">
             <input type="file" class="custom-file-input" id="resume-file" onchange="updateList()">
@@ -37,9 +56,50 @@
     <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Enter Job Title" aria-label="Recipient's username" aria-describedby="button-addon2" id="jobtitle">
         <div class="input-group-append">
-            <button onclick="doSearch()" class="btn btn-primary">Search!</button>
+            <button onclick="doSearch()" class="btn btn-primary" id="searchbtn">Search!</button>
         </div>
     </div>
     
 </div>
+
+<div class="justify-content-center" style="display: none;" id="loadingspinner">
+    <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <p class="justify-content-center">  Searching jobs for you! This may take a moment.</p>
+</div>
+
+<div class="container">
+    <table class="table" id="resultstable" style="display: none;">
+    <thead class="thead-dark">
+        <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Company</th>
+        <th scope="col">Platform</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+        </tr>
+        <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+        </tr>
+        <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+        </tr>
+    </tbody>
+    </table>
+</div>
+
 {% endblock %}

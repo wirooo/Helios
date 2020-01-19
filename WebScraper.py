@@ -5,6 +5,7 @@ def indeedscrape(searchterm):
     def listofjobs(indeedurl):
         # 'https://ca.indeed.com/jobs?q=software+developer&l=Waterloo%2C+ON'
         source = requests.get(indeedurl).text
+        # soup = BeautifulSoup(source, 'lxml')
         soup = BeautifulSoup(source, 'lxml')
 
         listoflinks = []
@@ -46,6 +47,7 @@ def indeedscrape(searchterm):
         jobdata['location'] = joblocation(i)
         jobdata['description'] = jobdescription(i)
         jobdata['url'] = i
+        jobdata['platform'] = "indeed"
         jobs.append(jobdata)
 
     return jobs
@@ -55,7 +57,7 @@ def monsterscrape(searchterm, city):
     city = city.replace(" ", "-")
     request_url = "https://www.monster.ca/jobs/search/?q=" + searchterm + "&where=" + city + "__2C-ON"
     response = requests.get(request_url, timeout=5)
-    content = BeautifulSoup(response.content, "html.parser")
+    content = BeautifulSoup(response.content, "lxml")
     links = content.findAll('a', href=True)
     listings = []
     for a in links:
@@ -65,12 +67,13 @@ def monsterscrape(searchterm, city):
     for job_url in listings:
         jobdata = {}
         jobresponse = requests.get(job_url, timeout=5)
-        jobcontent = BeautifulSoup(jobresponse.content, "html.parser")
+        jobcontent = BeautifulSoup(jobresponse.content, "lxml")
         description = jobcontent.find("div", attrs={"id": "JobDescription"}).text
         jobdata["description"] = description
         jobdata["url"] = job_url
         title = jobcontent.find("h1", attrs={"class": "title"}).text.split(" at ")
         jobdata["title"] = title[0]
         jobdata["company"] = title[1].rstrip("\n")
+        jobdata["platform"] = "monster"
         jobs.append(jobdata)
     return jobs
