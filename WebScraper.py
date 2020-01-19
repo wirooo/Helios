@@ -10,7 +10,7 @@ def indeedscrape(searchterm):
 
         for a in soup.find_all('a', href=True):
             if("vjs=3" in a['href']):
-                listoflinks.append("https://indeed.com" + a['href'])
+                listoflinks.append("https://www.indeed.com" + a['href'])
 
         return listoflinks
 
