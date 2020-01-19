@@ -1,3 +1,115 @@
+Education
+ Bachelor
+Master 
+Ph.D
+1st Year
+First Year
+2nd Year
+Second Year
+3rd Year
+Third Year
+4th Year
+Fourth Year
+5th Year
+Fifth Year 
+MS Office 
+Word
+Excel
+Powerpoint
+Outlook
+OneNote
+Google Drive
+Docs
+Sheets
+Slides
+Forms
+Writing
+SEO
+WordPress
+Journalism
+Technical Writing
+Spreadsheets
+Comparative analysis
+Pivot Tables
+Excel Solver 
+Vertical Lookups
+Social Media
+Facebook
+Instagram
+LinkedIn
+Twitter 
+Phone Skills
+Productivity
+Quickbooks
+Graphical
+Design
+Photoshop
+Lightroom
+Illustrator
+InDesign
+Adobe XD
+Fresco
+Premiere Rush 
+Premiere Pro
+After Effects
+Dimension
+Acrobat Pro
+Dreamweaver
+Animate
+Audition
+Lightroom Classic
+Character Animator
+Fuse
+Substance
+Prelude
+InCopy
+Media Encoder 
+Bridge 
+Spark
+Sales
+Zoho CRM
+Pipedrive CRM
+Oracle Sales Cloud
+SugarCRM
+Business
+CAPM
+CBAP
+CSCP
+PMP
+CRM
+Accounting
+CPA
+CFA
+CMA
+EA
+CIA
+CISA
+CAIA
+Business
+PHR
+SPHR
+SHRM
+A+
+Network+
+CCNA
+CCNP
+CCIE
+Software
+Salesforce
+Publisher
+Analytics 
+AdWords
+B.EngSci
+Engineer    
+Mechanical
+Civil
+Electrical
+Chemical
+Software
+Mechatronics
+Biomedical 
+Flutter
+Dart
 Java
 Python
 C++
@@ -5,6 +117,8 @@ C
 JavaScript
 MATLAB
 CSS/HTML
+XML
+AJAX
 SQL
 C#
 Ruby
@@ -14,7 +128,11 @@ Swift
 Objective-C
 SolidWorks
 AutoCAD
+OnShape
+Fusion Autodesk 360
 CATIA
 CREO
 Alias
 Pro-Engineer
+
+
