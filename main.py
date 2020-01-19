@@ -24,6 +24,7 @@ def search():
 
 def findmatches(jobs, keywords):
     matches=[]
+    matches_sorted = []
     for job in jobs:
         suitability = 0
         for kwd in keywords:
@@ -36,8 +37,8 @@ def findmatches(jobs, keywords):
                     newmatch[key] = job[key]
             newmatch["suitability"] = suitability
             matches.append(newmatch)
-
-    return matches
+    matches_sorted = sorted(matches, key=lambda i: i['suitability'], reverse=True)
+    return matches_sorted
 
 def runsearches(keywords, jobtitle):
     print("finding jobs for " + jobtitle)
