@@ -12,22 +12,7 @@ def indeedscrape(searchterm):
             if("vjs=3" in a['href']):
                 listoflinks.append("https://indeed.com" + a['href'])
 
-        # for i in listoflinks:
-        #     print(i)
-
         return listoflinks
-
-    # def jobdescription(pageurl):
-    #     source = requests.get(pageurl).text
-    #     soup = BeautifulSoup(source, 'lxml')
-    #     description = soup.find(id="jobDescriptionText").text
-    #     return description
-    #
-    # def jobtitle(pageurl):
-    #     source = requests.get(pageurl).text
-    #     soup = BeautifulSoup(source, 'lxml')
-    #     title = soup.find('h3', attrs={'class': 'icl-u-xs-mb--xs icl-u-xs-mt--none jobsearch-JobInfoHeader-title'}).text
-    #     return title
 
     def jobtitleanddescription(pageurl):
         source = requests.get(pageurl).text
@@ -38,21 +23,9 @@ def indeedscrape(searchterm):
         return answer
         # print(answer)
 
-
-    # def joblocation(pageurl):
-    #     source = requests.get(pageurl).text
-    #     soup = BeautifulSoup(source, 'lxml')
-    #     div = soup.find('span', attrs={'class': "jobsearch-JobMetadataHeader-iconLabel"}).text
-    #     # print(div)
-    #     return div
-
-
     # ---------------------------------------------------------------------------------
     jobs = []
-    # url = input()
     joburl = "https://ca.indeed.com/jobs?q=" + searchterm.replace(" ", "+") + "&l=Waterloo%2C+ON"
-    # joburl = "https://ca.indeed.com/jobs?q=" + url.replace(" ", "+") + "&l=Waterloo%2C+ON"
-
 
     for i in listofjobs(joburl):
         jobdata = {}
