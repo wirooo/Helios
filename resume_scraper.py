@@ -1,6 +1,6 @@
 from pdfminer.high_level import *
 
-def match_keywords (resume_link):
+def match_keywords(resume_link):
     resume_data = extract_text(resume_link)
     keywords = []
 
@@ -13,7 +13,6 @@ def match_keywords (resume_link):
 
     for kwd in keywords:
         if kwd in resume_data:
-            matched_kwds.append(kwd)
+            matched.append(kwd)
 
-    print(matched_kwds)
-    return matched_kwds
+    return matched
