@@ -3,9 +3,7 @@ import requests
 
 def indeedscrape(searchterm):
     def listofjobs(indeedurl):
-        # 'https://ca.indeed.com/jobs?q=software+developer&l=Waterloo%2C+ON'
         source = requests.get(indeedurl).text
-        # soup = BeautifulSoup(source, 'lxml')
         soup = BeautifulSoup(source, 'lxml')
 
         listoflinks = []
@@ -14,38 +12,52 @@ def indeedscrape(searchterm):
             if("vjs=3" in a['href']):
                 listoflinks.append("https://indeed.com" + a['href'])
 
-        return listoflinks
-
         # for i in listoflinks:
         #     print(i)
 
-    def jobdescription(pageurl):
-        source = requests.get(pageurl).text
-        soup = BeautifulSoup(source, 'lxml')
-        div = soup.find(id="jobDescriptionText").text
-        return div
+        return listoflinks
 
-    def jobtitle(pageurl):
-        source = requests.get(pageurl).text
-        soup = BeautifulSoup(source, 'lxml')
-        div = soup.find('h3', attrs={'class': 'icl-u-xs-mb--xs icl-u-xs-mt--none jobsearch-JobInfoHeader-title'}).text
-        return div
+    # def jobdescription(pageurl):
+    #     source = requests.get(pageurl).text
+    #     soup = BeautifulSoup(source, 'lxml')
+    #     description = soup.find(id="jobDescriptionText").text
+    #     return description
+    #
+    # def jobtitle(pageurl):
+    #     source = requests.get(pageurl).text
+    #     soup = BeautifulSoup(source, 'lxml')
+    #     title = soup.find('h3', attrs={'class': 'icl-u-xs-mb--xs icl-u-xs-mt--none jobsearch-JobInfoHeader-title'}).text
+    #     return title
 
-    def joblocation(pageurl):
+    def jobtitleanddescription(pageurl):
         source = requests.get(pageurl).text
         soup = BeautifulSoup(source, 'lxml')
-        div = soup.find('div', attrs={'class': "icl-u-lg-mr--sm icl-u-xs-mr--xs"}).text
-        return div
+        description = soup.find(id="jobDescriptionText").text
+        title = soup.find('h3', attrs={'class': 'icl-u-xs-mb--xs icl-u-xs-mt--none jobsearch-JobInfoHeader-title'}).text
+        answer = [title, description]
+        return answer
+        # print(answer)
+
+
+    # def joblocation(pageurl):
+    #     source = requests.get(pageurl).text
+    #     soup = BeautifulSoup(source, 'lxml')
+    #     div = soup.find('span', attrs={'class': "jobsearch-JobMetadataHeader-iconLabel"}).text
+    #     # print(div)
+    #     return div
+
 
     # ---------------------------------------------------------------------------------
     jobs = []
+    # url = input()
     joburl = "https://ca.indeed.com/jobs?q=" + searchterm.replace(" ", "+") + "&l=Waterloo%2C+ON"
+    # joburl = "https://ca.indeed.com/jobs?q=" + url.replace(" ", "+") + "&l=Waterloo%2C+ON"
+
 
     for i in listofjobs(joburl):
         jobdata = {}
-        jobdata['title'] = jobtitle(i)
-        jobdata['location'] = joblocation(i)
-        jobdata['description'] = jobdescription(i)
+        jobdata['title'] = jobtitleanddescription(i)[0]
+        jobdata['description'] = jobtitleanddescription(i)[1]
         jobdata['url'] = i
         jobdata['platform'] = "indeed"
         jobs.append(jobdata)
