@@ -1,6 +1,6 @@
 # starterhacks2020
 
-![Logo](/static/images/helios_small_logo.png)
+![Logo](/static/images/helios_small_logo.png =250x250)
 ![Exemplar](/static/images/exemplar4.png)
 
 ## Process
