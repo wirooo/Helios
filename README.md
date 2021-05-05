@@ -1,5 +1,5 @@
-# starterhacks2020
-
+# Helios
+Built at Starterhacks 2020
 ![Exemplar](/static/images/exemplar4.png)
 
 ## Process
